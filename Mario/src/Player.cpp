@@ -23,21 +23,23 @@ Player::Player( sf::RenderWindow& windowPtr) : win(windowPtr)
 
 void Player::update(sf::Time realTime,  bool moveDetected, bool jumpDetected, int direction)
 {
-    std::cout << "Player class entered " << direction << " " << moveDetected << std::endl;
+
 
     currPos = mainPlayer.getPosition();
     if (isGrounded) {
+            mainPlayer.setPosition(100, 100);
     // calculate the time taken, initial velocity, range etc
 
     //detect the keyboard actions and react to that
 
     if (jumpDetected) {
-             initPushVel = 30.0f;
+             initPushVel = 20.0f;
              playerClock.restart();
              mainPlayer = Mario[5];
              playerTime = playerClock.getElapsedTime();
-             yTrans = (initPushVel * playerTime.asSeconds() ) +
-                (0.5f * ACLTN_GRAVITY * (playerTime.asSeconds() * playerTime.asSeconds()));
+             yTrans = -5.0f;
+             /*yTrans = (initPushVel * playerTime.asSeconds() ) +
+                (0.5f * ACLTN_GRAVITY * (playerTime.asSeconds() * playerTime.asSeconds()));*/
 
     }
 
@@ -54,7 +56,7 @@ void Player::update(sf::Time realTime,  bool moveDetected, bool jumpDetected, in
 
             }
             mainPlayer = Mario[marioState];
-            std::cout << "Mario State " << marioState << " " << moveDetected << std::endl;
+
     }
     else
     {
@@ -64,6 +66,7 @@ void Player::update(sf::Time realTime,  bool moveDetected, bool jumpDetected, in
             playerClock.restart();
             mainPlayer = Mario[0];
 
+
     }
     }
 
@@ -71,12 +74,12 @@ void Player::update(sf::Time realTime,  bool moveDetected, bool jumpDetected, in
     else
         { // let the body flow with the formula
 
-            initPushVel = 0;
+            //initPushVel = 0;
             yTrans = 0;
             marioState = 1;
             mainPlayer = Mario[5];
             playerTime = playerClock.getElapsedTime();
-            yTrans = (initPushVel * playerTime.asSeconds() ) +
+            yTrans = (initPushVel * playerTime.asSeconds() * -1 ) +
                 (0.5f * ACLTN_GRAVITY * (playerTime.asSeconds() * playerTime.asSeconds()));
 
 
@@ -91,9 +94,23 @@ void Player::update(sf::Time realTime,  bool moveDetected, bool jumpDetected, in
     mainPlayer.move(0, yTrans);
 
     win.draw(mainPlayer);
-    std::cout << "End of Player class " << direction << " " << moveDetected << std::endl;
+
 }
 
+sf::FloatRect Player::getPlayerBounds()
+{
+    return(mainPlayer.getGlobalBounds());
+}
+
+sf::Vector2f Player::getPlayerOrigins()
+{
+    return(mainPlayer.getOrigin());
+}
+
+void Player::alignPosition(float alignYpos)
+{
+    mainPlayer.setPosition(mainPlayer.getPosition().x, alignYpos);
+}
 
 Player::~Player()
 {

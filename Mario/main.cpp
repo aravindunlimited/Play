@@ -1,6 +1,7 @@
 #include <iostream>
 #include "SFML/Graphics.hpp"
 #include "Player.h"
+#include "Ground.h"
 
 int main()
 {
@@ -11,6 +12,9 @@ int main()
     window.setVerticalSyncEnabled(true);
     realTime.restart();
     Player SuperMario(window);
+    Ground greenGround(window);
+    //std::vector<Ground> grounds;
+    //grounds.push_back(greenGround);
 
     while (window.isOpen())
     {
@@ -32,7 +36,7 @@ int main()
                 {
                     direction = 1;
 					moveDetected = true;
-					std::cout << "Right key pressed " << direction << " " << moveDetected << std::endl;
+
                 }
             else
                 {
@@ -53,6 +57,18 @@ int main()
         //Ground.update(realTime.getElapsedTime(), moveDetected, jumpDetected, direction);
 
         SuperMario.update(realTime.getElapsedTime(), moveDetected, jumpDetected, direction);
+        SuperMario.isGrounded = false;
+        //for (int i = 0; i < grounds.max_size();i++)
+        //{
+            //grounds[i].update(moveDetected, direction);
+            //if (grounds[i].groundedCheck(SuperMario.getPlayerBounds())) { SuperMario.isGrounded = true;}
+            greenGround.update(moveDetected, direction);
+            if (greenGround.groundedCheck(SuperMario.getPlayerBounds(),SuperMario.getPlayerOrigins()))
+                {
+                    SuperMario.isGrounded = true;
+                    //SuperMario.alignPosition(300);
+            }
+        //}
 
         window.display();
     }

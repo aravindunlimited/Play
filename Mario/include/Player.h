@@ -9,6 +9,9 @@ class Player
         bool isGrounded = true;
         Player(sf::RenderWindow& windowPtr);
         void update(sf::Time realTime, bool moveDetected, bool jumpDetected, int direction);
+        void alignPosition(float alignYpos);
+        sf::FloatRect getPlayerBounds();
+        sf::Vector2f getPlayerOrigins();
         virtual ~Player();
 
         sf::Sprite mainPlayer;
@@ -25,7 +28,7 @@ class Player
         sf::Vector2f currPos;
         float initPushVel = 0.0f, yTrans = 0.0f;
         bool isJumping = false;
-        const float ACLTN_GRAVITY = 9.8f, TRANSITION_TIME = .10f;
+        const float ACLTN_GRAVITY = 50.0f, TRANSITION_TIME = .10f;
 };
 
 #endif // PLAYER_H
