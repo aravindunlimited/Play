@@ -8,7 +8,7 @@ class Player
     public:
         bool isGrounded = true;
         Player(sf::RenderWindow& windowPtr);
-        sf::Sprite& update(sf::Time realTime, bool moveDetected, bool jumpDetected, int direction);
+        void update(sf::Time realTime, bool moveDetected, bool jumpDetected, int direction);
         void alignPosition(float alignYpos);
         sf::FloatRect getPlayerBounds();
         sf::Vector2f getPlayerOrigins();

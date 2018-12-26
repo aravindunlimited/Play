@@ -21,7 +21,7 @@ Player::Player( sf::RenderWindow& windowPtr) : win(windowPtr)
 
 }
 
-sf::Sprite& Player::update(sf::Time realTime,  bool moveDetected, bool jumpDetected, int direction)
+void Player::update(sf::Time realTime,  bool moveDetected, bool jumpDetected, int direction)
 {
 
 
@@ -93,8 +93,7 @@ sf::Sprite& Player::update(sf::Time realTime,  bool moveDetected, bool jumpDetec
     mainPlayer.scale(direction,1);
     mainPlayer.move(0, yTrans);
 
-    //win.draw(mainPlayer);
-    return(mainPlayer);
+    win.draw(mainPlayer);
 
 }
 
@@ -105,7 +104,7 @@ sf::FloatRect Player::getPlayerBounds()
 
 sf::Vector2f Player::getPlayerOrigins()
 {
-    return(mainPlayer.getOrigin());
+    return(mainPlayer.getPosition());
 }
 
 void Player::alignPosition(float alignYpos)
