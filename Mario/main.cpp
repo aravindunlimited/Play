@@ -6,6 +6,8 @@
 int main()
 {
     sf::Clock realTime;
+    sf::Sprite PlayerSprite, groundSprite;
+    sf::Vector2i barrierMatrix = sf::Vector2i(0,0);
     bool jumpDetected = false, moveDetected = false;
     int direction = 1;
     sf::RenderWindow window(sf::VideoMode(800, 600), "Mario");
@@ -13,7 +15,6 @@ int main()
     realTime.restart();
     Player SuperMario(window);
     Ground greenGround(window);
-    //std::vector<Ground> grounds;
     //grounds.push_back(greenGround);
 
     while (window.isOpen())
@@ -56,19 +57,31 @@ int main()
 
         //Ground.update(realTime.getElapsedTime(), moveDetected, jumpDetected, direction);
 
-        SuperMario.update(realTime.getElapsedTime(), moveDetected, jumpDetected, direction);
+        PlayerSprite = SuperMario.update(realTime.getElapsedTime(), moveDetected, jumpDetected, direction);
+        window.draw(PlayerSprite);
         SuperMario.isGrounded = false;
         //for (int i = 0; i < grounds.max_size();i++)
         //{
             //grounds[i].update(moveDetected, direction);
             //if (grounds[i].groundedCheck(SuperMario.getPlayerBounds())) { SuperMario.isGrounded = true;}
-            greenGround.update(moveDetected, direction);
-            if (greenGround.groundedCheck(SuperMario.getPlayerBounds(),SuperMario.getPlayerOrigins()))
+
+            if (greenGround.groundedCheck(PlayerSprite.getPosition()))
                 {
                     SuperMario.isGrounded = true;
                     //SuperMario.alignPosition(300);
             }
+
+            barrierMatrix = greenGround.barrierCheck(SuperMario.getPlayerBounds());
+
+            groundSprite = greenGround.update(moveDetected, direction, barrierMatrix);
+            if ((PlayerSprite.getPosition().y > groundSprite.getPosition().y) && (SuperMario.isGrounded))
+            {
+                SuperMario.alignPosition(groundSprite.getPosition().y - 1.0f);
+            }
+            window.draw(groundSprite);
+
         //}
+
 
         window.display();
     }

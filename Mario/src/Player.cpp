@@ -21,7 +21,7 @@ Player::Player( sf::RenderWindow& windowPtr) : win(windowPtr)
 
 }
 
-void Player::update(sf::Time realTime,  bool moveDetected, bool jumpDetected, int direction)
+sf::Sprite& Player::update(sf::Time realTime,  bool moveDetected, bool jumpDetected, int direction)
 {
 
 
@@ -37,7 +37,8 @@ void Player::update(sf::Time realTime,  bool moveDetected, bool jumpDetected, in
              playerClock.restart();
              mainPlayer = Mario[5];
              playerTime = playerClock.getElapsedTime();
-             yTrans = -5.0f;
+             yTrans = -1.0f;
+             jumpClock.restart();
              /*yTrans = (initPushVel * playerTime.asSeconds() ) +
                 (0.5f * ACLTN_GRAVITY * (playerTime.asSeconds() * playerTime.asSeconds()));*/
 
@@ -79,10 +80,9 @@ void Player::update(sf::Time realTime,  bool moveDetected, bool jumpDetected, in
             marioState = 1;
             mainPlayer = Mario[5];
             playerTime = playerClock.getElapsedTime();
+            jumpTime = jumpClock.getElapsedTime();
             yTrans = (initPushVel * playerTime.asSeconds() * -1 ) +
-                (0.5f * ACLTN_GRAVITY * (playerTime.asSeconds() * playerTime.asSeconds()));
-
-
+            (0.5f * ACLTN_GRAVITY * (playerTime.asSeconds() * playerTime.asSeconds()));
 
     }
 
@@ -93,7 +93,8 @@ void Player::update(sf::Time realTime,  bool moveDetected, bool jumpDetected, in
     mainPlayer.scale(direction,1);
     mainPlayer.move(0, yTrans);
 
-    win.draw(mainPlayer);
+    //win.draw(mainPlayer);
+    return(mainPlayer);
 
 }
 
