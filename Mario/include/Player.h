@@ -2,13 +2,13 @@
 #define PLAYER_H
 #include<iostream>
 #include "SFML/Graphics.hpp"
+#include "Ground.h"
 
 class Player
 {
     public:
-        bool isGrounded = true;
-        Player(sf::RenderWindow& windowPtr);
-        void update(sf::Time realTime, bool moveDetected, bool jumpDetected, int direction);
+        Player(sf::RenderWindow& windowPtr, Ground& ground);
+        void update(bool moveDetected, bool jumpDetected, int direction);
         void alignPosition(float alignYpos);
         sf::FloatRect getPlayerBounds();
         sf::Vector2f getPlayerOrigins();
@@ -25,10 +25,12 @@ class Player
         sf::Clock playerClock, jumpClock;
         sf::Time playerTime, jumpTime;
         sf::RenderWindow& win;
+        Ground& greenGround;
         sf::Vector2f currPos;
         float initPushVel = 0.0f, yTrans = 0.0f;
         bool isJumping = false;
         const float ACLTN_GRAVITY = 50.0f, TRANSITION_TIME = .10f, JUMP_TIME = 0.01f;
+        bool isGrounded();
 };
 
 #endif // PLAYER_H

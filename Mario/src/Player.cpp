@@ -3,7 +3,7 @@
 #include "SFML/Graphics.hpp"
 #include "Player.h"
 
-Player::Player( sf::RenderWindow& windowPtr) : win(windowPtr)
+Player::Player( sf::RenderWindow& windowPtr, Ground& ground) : win(windowPtr), greenGround(ground)
 {
     mariotexture.loadFromFile("supermario.png");
     for (marioState = 0; marioState < MAXSTATE; marioState++)
@@ -11,7 +11,7 @@ Player::Player( sf::RenderWindow& windowPtr) : win(windowPtr)
         Mario[marioState].setTexture(mariotexture);
         Mario[marioState].setTextureRect(sf::IntRect((marioState*30),0, 30, 35));
         Mario[marioState].setScale(1.5f,1.5f);
-        Mario[marioState].setOrigin(15,35);
+        Mario[marioState].setOrigin(Mario[marioState].getTextureRect().width/2,Mario[marioState].getTextureRect().height);
     }
     Mario[4] = Mario[2];
     mainPlayer = Mario[0];
@@ -21,12 +21,13 @@ Player::Player( sf::RenderWindow& windowPtr) : win(windowPtr)
 
 }
 
-void Player::update(sf::Time realTime,  bool moveDetected, bool jumpDetected, int direction)
+void Player::update(bool moveDetected, bool jumpDetected, int direction)
 {
 
 
     currPos = mainPlayer.getPosition();
-    if (isGrounded) {
+
+    if (isGrounded()) {
             mainPlayer.setPosition(100, 100);
     // calculate the time taken, initial velocity, range etc
 
@@ -90,6 +91,7 @@ void Player::update(sf::Time realTime,  bool moveDetected, bool jumpDetected, in
 
 
     mainPlayer.setPosition(currPos);
+
     mainPlayer.scale(direction,1);
     mainPlayer.move(0, yTrans);
 
@@ -110,6 +112,21 @@ sf::Vector2f Player::getPlayerOrigins()
 void Player::alignPosition(float alignYpos)
 {
     mainPlayer.setPosition(mainPlayer.getPosition().x, alignYpos);
+}
+
+bool Player::isGrounded()
+{
+    sf::Vector2i GroundStatus;
+    GroundStatus = greenGround.groundedCheck(mainPlayer.getPosition());
+    if (GroundStatus.x == 1)
+        {
+  /*          if (mainPlayer.getPosition().y > greenGround.getGroundOrigins(GroundStatus.y).y)
+            {
+                alignPosition(greenGround.getGroundOrigins(GroundStatus.y).y - 2.0f);
+            } */
+            return(true);
+        }
+    else return(false);
 }
 
 Player::~Player()

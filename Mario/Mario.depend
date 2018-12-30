@@ -1,9 +1,11 @@
 # depslib dependency file v1.0
-1545824569 source:d:\games\mario\mario\main.cpp
+1546106915 source:d:\games\mario\mario\main.cpp
 	<iostream>
 	"SFML/Graphics.hpp"
 	"Player.h"
 	"Ground.h"
+	"Enemy.h"
+	"Bullet.h"
 
 1537195792 d:\software\sfml-2.5.0\include\sfml\graphics.hpp
 	<SFML/Window.hpp>
@@ -414,23 +416,43 @@
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
 
-1545818122 d:\games\mario\mario\include\player.h
+1545911249 d:\games\mario\mario\include\player.h
 	<iostream>
 	"SFML/Graphics.hpp"
+	"Ground.h"
 
-1545818059 source:d:\games\mario\mario\src\player.cpp
+1545912885 source:d:\games\mario\mario\src\player.cpp
 	<iostream>
 	<math.h>
 	"SFML/Graphics.hpp"
 	"Player.h"
 
-1545823065 source:d:\games\mario\mario\src\ground.cpp
+1546070961 source:d:\games\mario\mario\src\ground.cpp
 	<iostream>
 	<math.h>
 	"SFML/Graphics.hpp"
 	"Ground.h"
 
-1545844664 d:\games\mario\mario\include\ground.h
+1545932913 d:\games\mario\mario\include\ground.h
 	<iostream>
 	"SFML/Graphics.hpp"
+
+1546063289 source:d:\games\mario\mario\src\enemy.cpp
+	<iostream>
+	<math.h>
+	"SFML/Graphics.hpp"
+	"Enemy.h"
+	"Ground.h"
+
+1546058467 d:\games\mario\mario\include\enemy.h
+	<iostream>
+	"SFML/Graphics.hpp"
+	"Ground.h"
+
+1546106846 source:d:\games\mario\mario\src\bullet.cpp
+	<iostream>
+	<SFML/Graphics.hpp>
+	"Bullet.h"
+
+1546107040 d:\games\mario\mario\include\bullet.h
 

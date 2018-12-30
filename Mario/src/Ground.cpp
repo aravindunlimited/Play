@@ -10,10 +10,23 @@ Ground::Ground(sf::RenderWindow& windowPtr) : wing(windowPtr)
     superGround.setTexture(groundtexture);
     superGround.setTextureRect(sf::IntRect(0,0,100,600));
     groundClock.restart();
+    skipLevel = 100;
+    float k;
+
     for (counter = 0; counter < 10; counter ++)
     {
-        superGround.setPosition((counter - 1) * (superGround.getTextureRect().width), INIT_YPOS + ((rand() % 7) * 10)) ;
+        if (counter != skipLevel) {
+        if (rand() % 7 == 4) k = (rand() % 7) * 10;
+        else k = 0;
+
+        superGround.setPosition((counter - 1) * (superGround.getTextureRect().width), INIT_YPOS + k) ;
         spriteSheet.push_back(superGround);
+        }
+        else
+        {
+            emptySprite.setPosition((counter) * superGround.getTextureRect().width, 600);
+            spriteSheet.push_back(emptySprite);
+        }
 
     }
 
@@ -82,11 +95,11 @@ sf::Vector2i Ground::barrierCheck( sf::FloatRect playerBounds)
 
 }
 
-void Ground::update(bool moveDetected, int direction, sf::FloatRect playerBound)
+bool Ground::update(bool moveDetected, int direction, sf::FloatRect playerBound)
 {
+    bool groundMoved = false;
+    float k;
     sf::Vector2i barMatrix = barrierCheck(playerBound);
-
-
 
     for (counter = 0; counter < 10; counter++)
     {
@@ -95,6 +108,7 @@ void Ground::update(bool moveDetected, int direction, sf::FloatRect playerBound)
             ((barMatrix.y == 0) && (direction == 1))))
         {
             spriteSheet[counter].move(5.0f * direction * -1.0f, 0.0f);
+            groundMoved = true;
 
         }
 
@@ -104,19 +118,36 @@ void Ground::update(bool moveDetected, int direction, sf::FloatRect playerBound)
 
     if (spriteSheet[0].getPosition().x   < superGround.getTextureRect().width * -1)
     {
-        superGround.setPosition(spriteSheet[9].getPosition().x + (superGround.getTextureRect().width), INIT_YPOS + ((rand() % 7) * 10)) ;
+
+        if (rand() % 9 == 3 )
+        {
+            emptySprite.setPosition((spriteSheet[9].getPosition().x + superGround.getTextureRect().width), 600);
+            spriteSheet.push_back(emptySprite);
+        }
+        else
+        {
+            if (rand() % 7 == 4) k = (rand() % 7) * 10;
+            else k = 0;
+
+            superGround.setPosition(spriteSheet[9].getPosition().x + (superGround.getTextureRect().width), INIT_YPOS + k) ;
+            spriteSheet.push_back(superGround);
+
+        }
         spriteSheet.erase(spriteSheet.begin());
-        spriteSheet.push_back(superGround);
 
     }
 
     if (spriteSheet[9].getPosition().x    > superGround.getTextureRect().width * 8)
     {
-        superGround.setPosition(spriteSheet[0].getPosition().x - (superGround.getTextureRect().width), INIT_YPOS + ((rand() % 7) * 10)) ;
+        if (rand() % 7 == 4) k = (rand() % 7) * 10;
+        else k = 0;
+        superGround.setPosition(spriteSheet[0].getPosition().x - (superGround.getTextureRect().width), INIT_YPOS + k) ;
         spriteSheet.erase(spriteSheet.end());
         spriteSheet.insert(spriteSheet.begin(), superGround);
 
     }
+
+    return(groundMoved);
 
 
 }
